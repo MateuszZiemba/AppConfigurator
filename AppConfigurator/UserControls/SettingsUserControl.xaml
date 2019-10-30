@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="AppConfigurator.UserControls.SettingsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AppConfigurator.UserControls"
+             xmlns:its="clr-namespace:AppConfigurator.ItemTemplateSelectors"
+             xmlns:converters="clr-namespace:AppConfigurator.ValueConverters"
+             mc:Ignorable="d"
+             d:DesignHeight="600"
+             d:DesignWidth="400">
+    <UserControl.Resources>
+        <converters:StringToBooleanConverter x:Key="StringToBooleanConverter" />
+        <its:BooleanSettingDataTemplateSelector x:Key="myBooleanSettingDataTemplateSelector" />
+        
+        <DataTemplate x:Key="StringSettingTemplate">
+            <Grid Margin="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Label Content="{Binding Path=LabelName, Mode=OneWay}"
+                       Grid.Column="0" />
+                <TextBox Text="{Binding Path=Value, Mode=TwoWay}"
+                         Grid.Column="1" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="BooleanSettingTemplate">
+            <Grid Margin="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Label Content="{Binding Path=LabelName, Mode=OneWay}"
+                       Grid.Column="0" />
+                <CheckBox IsChecked="{Binding Path=Value, Converter={StaticResource StringToBooleanConverter}}"
+                          Grid.Column="1" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <ItemsControl ItemsSource="{Binding Settings}"
+                      ItemTemplateSelector="{StaticResource myBooleanSettingDataTemplateSelector}" />
+    </Grid>
+
+</UserControl>
