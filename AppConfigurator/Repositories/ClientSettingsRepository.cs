@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace AppConfigurator.Repositories
 {
@@ -16,18 +17,27 @@ namespace AppConfigurator.Repositories
         private Configuration config;
         private ClientSettingsSection userSettingsSection;
         private string connectionStringName;
+        private const string userSettingsName = "userSettings";
 
         public ClientSettingsRepository(string configFilePath)
         {
-            string configName = String.Concat("\\", ""); //todo add modal with path selection and checkbox to save selection for next time 
-            string userSettingsPath = "userSettings/projectName";
+            string userSettingsPath = GetFullUserSettingsSectionPath(configFilePath);
+
             connectionStringName = "connstringName"; //todo to implement
 
             ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
-            fileMap.ExeConfigFilename = String.Concat(Environment.CurrentDirectory, configName);
+            fileMap.ExeConfigFilename = configFilePath;
             config = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
             userSettingsSection = (ClientSettingsSection)config.GetSection(userSettingsPath);
         }
+
+        private string GetFullUserSettingsSectionPath(string configFilePath)
+        {
+            XDocument configXml = XDocument.Load(configFilePath);
+            var userSettingsNodeName = ((XElement)configXml.Descendants().Where(n => n.Name.LocalName.Equals(userSettingsName)).FirstOrDefault().FirstNode).Name.LocalName;
+            return String.Concat(userSettingsName, "/", userSettingsNodeName);
+        }
+
         public List<ColorPicker> GetAppearanceSettings()
         {
             List<ColorPicker> colorPickers = new List<ColorPicker>();

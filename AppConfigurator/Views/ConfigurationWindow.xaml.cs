@@ -45,7 +45,7 @@ namespace AppConfigurator
                 MessageBox.Show("Save was not successful!", "Save error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        private string GetSelectedConfigFile()
+        private string GetSelectedConfigFile() //todo add checkbox with remember selection setting
         {
             string selection = null;
             OpenFileDialog openFileDialog = new OpenFileDialog();
