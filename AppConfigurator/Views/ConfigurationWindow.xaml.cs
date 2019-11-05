@@ -2,6 +2,7 @@
 using AppConfigurator.Repositories;
 using AppConfigurator.Repositories.Contract;
 using AppConfigurator.ViewModels;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,7 +31,7 @@ namespace AppConfigurator
         public ConfigurationWindow()
         {
             InitializeComponent();
-            settingsRepository = new ClientSettingsRepository(); //todo DI
+            settingsRepository = new ClientSettingsRepository(GetSelectedConfigFile());
             ViewModel = new ConfigurationViewModel(settingsRepository);
             this.DataContext = ViewModel;
         }
@@ -42,6 +43,18 @@ namespace AppConfigurator
                 MessageBox.Show("Save successful!", "Saved!", MessageBoxButton.OK, MessageBoxImage.Information);
             else
                 MessageBox.Show("Save was not successful!", "Save error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private string GetSelectedConfigFile()
+        {
+            string selection = null;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = System.Environment.CurrentDirectory;
+            openFileDialog.Filter = "Config files (*.config)|*.config|All files (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == true)
+                selection = openFileDialog.FileName;
+            return selection;
         }
     }
 }

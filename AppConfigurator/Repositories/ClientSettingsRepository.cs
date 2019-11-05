@@ -17,7 +17,7 @@ namespace AppConfigurator.Repositories
         private ClientSettingsSection userSettingsSection;
         private string connectionStringName;
 
-        public ClientSettingsRepository()
+        public ClientSettingsRepository(string configFilePath)
         {
             string configName = String.Concat("\\", ""); //todo add modal with path selection and checkbox to save selection for next time 
             string userSettingsPath = "userSettings/projectName";
