@@ -86,7 +86,7 @@
     <Compile Include="Models\ColorPicker.cs" />
     <Compile Include="Models\AppSetting.cs" />
     <Compile Include="Repositories\ClientSettingsRepository.cs" />
-    <Compile Include="Repositories\Contract\ISettingsRepository.cs" />
+    <Compile Include="Repositories\Contracts\ISettingsRepository.cs" />
     <Compile Include="Repositories\UserSettingsRepository.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UserControls\AppearanceUserControl.xaml.cs">

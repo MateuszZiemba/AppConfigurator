@@ -17,16 +17,16 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0">
-            <TabItem Header="Color pickers">
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Auto">
-                    <uc:AppearanceUserControl />
-                </ScrollViewer>
-            </TabItem>
             <TabItem Header="User settings">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                               VerticalScrollBarVisibility="Auto">
                     <uc:SettingsUserControl />
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Color pickers">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+                    <uc:AppearanceUserControl />
                 </ScrollViewer>
             </TabItem>
         </TabControl>
