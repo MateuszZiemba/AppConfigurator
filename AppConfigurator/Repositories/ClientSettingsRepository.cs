@@ -1,4 +1,5 @@
 ﻿using AppConfigurator.Enums;
+using AppConfigurator.Helpers;
 using AppConfigurator.Models;
 using AppConfigurator.Repositories.Contract;
 using AppConfigurator.ViewModels;
@@ -19,39 +20,69 @@ namespace AppConfigurator.Repositories
         private string connectionStringName;
         private const string userSettingsName = "userSettings";
 
+        private List<ColorPicker> ColorPickers { get; set; }
+        private List<AppSetting> AppSettings { get; set; }
+
         public ClientSettingsRepository(string configFilePath)
         {
             string userSettingsPath = GetFullUserSettingsSectionPath(configFilePath);
 
-            connectionStringName = "connstringName"; //todo to implement
+            //connectionStringName = "connstringName"; //todo to implement
 
             ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
             fileMap.ExeConfigFilename = configFilePath;
             config = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
             userSettingsSection = (ClientSettingsSection)config.GetSection(userSettingsPath);
+            
+            
+
+            ColorPickers = new List<ColorPicker>();
+            AppSettings = new List<AppSetting>();
+            MethodToGetData();
         }
 
         private string GetFullUserSettingsSectionPath(string configFilePath)
         {
+            string userSettingsNodeName = null;
             XDocument configXml = XDocument.Load(configFilePath);
-            var userSettingsNodeName = ((XElement)configXml.Descendants().Where(n => n.Name.LocalName.Equals(userSettingsName)).FirstOrDefault().FirstNode).Name.LocalName;
+            var userSettingsNode = (XElement)configXml.Descendants().Where(n => n.Name.LocalName.Equals(userSettingsName)).FirstOrDefault();
+            if (userSettingsNode != null)
+                userSettingsNodeName = ((XElement)userSettingsNode.FirstNode).Name.LocalName;
             return String.Concat(userSettingsName, "/", userSettingsNodeName);
+        }
+
+        private void MethodToGetData()
+        {
+            foreach (SettingElement setting in userSettingsSection.Settings)
+            {
+                var name = setting.Name;
+                var value = ((setting.Value.ValueXml).LastChild).InnerText.ToString();
+                var labelName = LabelHelper.GetLabelFromSettingName(name);
+                //var settingType = GetSettingType();
+
+                AppSettings.Add(new AppSetting(labelName, name, value, SettingType.String));
+            }
+        }
+
+        private SettingType GetSettingType(string settingElementType)
+        {
+            return SettingType.String;
         }
 
         public List<ColorPicker> GetAppearanceSettings()
         {
-            List<ColorPicker> colorPickers = new List<ColorPicker>();
+            //List<ColorPicker> colorPickers = new List<ColorPicker>();
 
-            colorPickers.Add(GetColorFromConfig("ExampleOfProperty", "Example of label"));
+            //colorPickers.Add(GetColorFromConfig("ExampleOfProperty", "Example of label"));
 
-            return colorPickers;
+            return ColorPickers;
         }
 
         public List<AppSetting> GetApplicationSettings()
         {
-            List<AppSetting> AppSettings = new List<AppSetting>();
+            //List<AppSetting> AppSettings = new List<AppSetting>();
 
-            AppSettings.Add(GetAppSettingFromConfig("ExampleOfProperty", "Example of label"));
+            //AppSettings.Add(GetAppSettingFromConfig("ExampleOfProperty", "Example of label"));
 
             return AppSettings;
         }

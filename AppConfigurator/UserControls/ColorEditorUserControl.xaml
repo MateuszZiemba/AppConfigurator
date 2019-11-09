@@ -36,7 +36,7 @@
             </ToggleButton.Style>
         </ToggleButton>
 
-        <Popup x:Name="Popup"
+        <!--<Popup x:Name="Popup"
                StaysOpen="False"
                PlacementTarget="{Binding ElementName=PopupButton}"
                Placement="Bottom">
@@ -46,6 +46,6 @@
                                     Background="White"
                                     
                                     SelectedColor="{Binding Path=SelectedColor, Mode=TwoWay}"/>
-        </Popup>
+        </Popup>-->
     </Grid>
 </UserControl>
