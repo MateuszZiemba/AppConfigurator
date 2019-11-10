@@ -19,8 +19,16 @@ namespace AppConfigurator.ItemTemplateSelectors
 
             if (AppSetting.SettingType.Equals(SettingEditorType.Bool))
                 return element.FindResource("BooleanSettingTemplate") as DataTemplate;
+
+            else if (AppSetting.SettingType.Equals(SettingEditorType.Numeric))
+                return element.FindResource("NumericSettingTemplate") as DataTemplate;
+
+            else if (AppSetting.SettingType.Equals(SettingEditorType.DateTime))
+                return element.FindResource("DateTimeSettingTemplate") as DataTemplate;
+
             else if (AppSetting.SettingType.Equals(SettingEditorType.ColorPicker))
                 return element.FindResource("ColorPickerSettingTemplate") as DataTemplate;
+
             else
                 return element.FindResource("StringSettingTemplate") as DataTemplate;
         }

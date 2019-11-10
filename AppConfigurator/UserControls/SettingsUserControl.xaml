@@ -14,13 +14,16 @@
     <UserControl.Resources>
         <converters:StringToBooleanConverter x:Key="StringToBooleanConverter" />
         <converters:StringToColorConverter x:Key="StringToColorConverter" />
+        <converters:StringToDateTimeConverter x:Key="StringToDateTimeConverter" />
+        <converters:StringToDoubleConverter x:Key="StringToDoubleConverter" />
+        
         <its:SettingDataTemplateSelector x:Key="SettingDataTemplateSelector" />
         
         <DataTemplate x:Key="StringSettingTemplate">
             <Grid Margin="3">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*" />
-                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
                 </Grid.ColumnDefinitions>
                 <Label Content="{Binding Path=LabelName, Mode=OneWay}"
                        Grid.Column="0" />
@@ -32,8 +35,8 @@
         <DataTemplate x:Key="BooleanSettingTemplate">
             <Grid Margin="3">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*" />
-                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
                 </Grid.ColumnDefinitions>
                 <Label Content="{Binding Path=LabelName, Mode=OneWay}"
                        Grid.Column="0" />
@@ -42,11 +45,45 @@
             </Grid>
         </DataTemplate>
 
+        <DataTemplate x:Key="NumericSettingTemplate">
+            <Grid Margin="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Content="{Binding Path=LabelName, Mode=OneWay}"
+                       HorizontalAlignment="Left"
+                       Grid.Column="0" />
+                <local:NumericUserControl NumericValue="{Binding Path=Value, 
+                                                            Converter={StaticResource StringToDoubleConverter}, 
+                                                            Mode=TwoWay}"
+                                              Grid.Column="1"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DateTimeSettingTemplate">
+            <Grid Margin="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Content="{Binding Path=LabelName, Mode=OneWay}"
+                       HorizontalAlignment="Left"
+                       Grid.Column="0" />
+                <local:DatePickerUserControl Date="{Binding Path=Value, 
+                                                            Converter={StaticResource StringToDateTimeConverter}, 
+                                                            Mode=TwoWay}"
+                                              Grid.Column="1"/>
+            </Grid>
+        </DataTemplate>
+
         <DataTemplate x:Key="ColorPickerSettingTemplate">
             <Grid Margin="3">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*" />
-                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
                 </Grid.ColumnDefinitions>
 
                 <Label Content="{Binding Path=LabelName, Mode=OneWay}"

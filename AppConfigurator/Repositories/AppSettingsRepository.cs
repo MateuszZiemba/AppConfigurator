@@ -5,7 +5,9 @@ using AppConfigurator.Repositories.Contract;
 using AppConfigurator.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,7 +36,8 @@ namespace AppConfigurator.Repositories
             userSettingsSection = (ClientSettingsSection)config.GetSection(userSettingsPath);
             
             AppSettings = new List<AppSetting>();
-            MethodToGetData();
+
+            GetAppSettingsFromSettingsFile();
         }
 
         private string GetFullUserSettingsSectionPath(string configFilePath)
@@ -47,7 +50,7 @@ namespace AppConfigurator.Repositories
             return String.Concat(userSettingsName, "/", userSettingsNodeName);
         }
 
-        private void MethodToGetData()
+        private void GetAppSettingsFromSettingsFile() 
         {
             foreach (SettingElement setting in userSettingsSection.Settings)
             {
@@ -63,8 +66,13 @@ namespace AppConfigurator.Repositories
         private SettingEditorType GetSettingEditorType(string settingValue)
         {
             string lowercaseValue = settingValue.ToLower();
+
             if (lowercaseValue.Equals("true") || lowercaseValue.Equals("false"))
                 return SettingEditorType.Bool;
+            else if (SettingsHelper.IsSettingNumeric(settingValue))
+                return SettingEditorType.Numeric;
+            else if (SettingsHelper.IsSettingDateTime(settingValue))
+                return SettingEditorType.DateTime;
             else if (SettingsHelper.IsSettingColor(settingValue))
                 return SettingEditorType.ColorPicker;
             else
@@ -79,6 +87,7 @@ namespace AppConfigurator.Repositories
         {
             try
             {
+                FormatSettingsDateTimes(viewModel.Settings);
                 UpdateAppSettingUserSettings(viewModel.Settings);
                 //UpdateConnectionSettingUserSettings(viewModel.ConnectionSettings); //todo implement
                 //UpdateConnectionString(viewModel.ConnectionSettings.Where(x=>x.ConfigurationName.Equals(connectionStringName)).FirstOrDefault());
@@ -89,6 +98,21 @@ namespace AppConfigurator.Repositories
             catch (Exception ex)
             {
                 return false;
+            }
+        }
+
+        private void FormatSettingsDateTimes(IList<AppSetting> appSettings)
+        {
+            DateTimeFormatInfo formatInfo = CultureInfo.CurrentCulture.DateTimeFormat;
+            foreach (var setting in appSettings)
+            {
+                if (setting.SettingType.Equals(SettingEditorType.DateTime))
+                {
+                    if (setting.OriginalValue.Length > 10)
+                        setting.Value = Convert.ToDateTime(setting.Value, formatInfo).ToString();
+                    else
+                        setting.Value = Convert.ToDateTime(setting.Value, formatInfo).ToString(formatInfo.ShortDatePattern);
+                }
             }
         }
 

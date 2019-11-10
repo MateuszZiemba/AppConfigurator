@@ -12,6 +12,7 @@ namespace AppConfigurator.Models
         public string ConfigurationName { get; set; }
         public string LabelName { get; set; }
         public string Value { get; set; }
+        public string OriginalValue { get; private set; }
         public SettingEditorType SettingType { get; set; }
 
         public AppSetting(string labelName, string configurationName, string value, SettingEditorType settingType = SettingEditorType.String)
@@ -19,6 +20,7 @@ namespace AppConfigurator.Models
             ConfigurationName = configurationName;
             LabelName = String.Concat(labelName, ": ");
             Value = value;
+            OriginalValue = value;
             SettingType = settingType;
         }
     }

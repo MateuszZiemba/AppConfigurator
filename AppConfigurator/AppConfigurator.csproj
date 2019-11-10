@@ -74,11 +74,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="UserControls\AppearanceUserControl.xaml">
+    <Page Include="UserControls\ColorPickerUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ColorPickerUserControl.xaml">
+    <Page Include="UserControls\DatePickerUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\NumericUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -99,15 +103,20 @@
     <Compile Include="Repositories\AppSettingsRepository.cs" />
     <Compile Include="Repositories\Contracts\ISettingsRepository.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="UserControls\AppearanceUserControl.xaml.cs">
-      <DependentUpon>AppearanceUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\ColorPickerUserControl.xaml.cs">
       <DependentUpon>ColorPickerUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DatePickerUserControl.xaml.cs">
+      <DependentUpon>DatePickerUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NumericUserControl.xaml.cs">
+      <DependentUpon>NumericUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\SettingsUserControl.xaml.cs">
       <DependentUpon>SettingsUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValueConverters\StringToDoubleConverter.cs" />
+    <Compile Include="ValueConverters\StringToDateTimeConverter.cs" />
     <Compile Include="ValueConverters\StringToColorConverter.cs" />
     <Compile Include="ValueConverters\ColorToBrushConverter.cs" />
     <Compile Include="ValueConverters\StringToBooleanConverter.cs" />
