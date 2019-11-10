@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace AppConfigurator.UserControls
 {
-    public partial class ColorEditorUserControl : UserControl
+    public partial class ColorPickerUserControl : UserControl
     {
         public Color ChosenColor
         {
@@ -24,13 +24,11 @@ namespace AppConfigurator.UserControls
         }
 
         public static readonly DependencyProperty ChosenColorProperty =
-            DependencyProperty.Register("ChosenColor", typeof(Color), typeof(ColorEditorUserControl));
+            DependencyProperty.Register("ChosenColor", typeof(Color), typeof(ColorPickerUserControl));
 
-
-
-        public ColorEditorUserControl()
+        public ColorPickerUserControl()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
     }
 }

@@ -57,33 +57,31 @@ namespace AppConfigurator.Repositories
             {
                 var name = setting.Name;
                 var value = ((setting.Value.ValueXml).LastChild).InnerText.ToString();
-                var labelName = LabelHelper.GetLabelFromSettingName(name);
-                //var settingType = GetSettingType();
+                var labelName = SettingsHelper.GetLabelFromSettingName(name);
+                var settingEditorType = GetSettingEditorType(value);
 
-                AppSettings.Add(new AppSetting(labelName, name, value, SettingType.String));
+                AppSettings.Add(new AppSetting(labelName, name, value, settingEditorType));
             }
         }
 
-        private SettingType GetSettingType(string settingElementType)
+        private SettingEditorType GetSettingEditorType(string settingValue)
         {
-            return SettingType.String;
+            string lowercaseValue = settingValue.ToLower();
+            if (lowercaseValue.Equals("true") || lowercaseValue.Equals("false"))
+                return SettingEditorType.Bool;
+            else if (SettingsHelper.IsSettingColor(settingValue))
+                return SettingEditorType.ColorPicker;
+            else
+                return SettingEditorType.String;
         }
 
         public List<ColorPicker> GetAppearanceSettings()
         {
-            //List<ColorPicker> colorPickers = new List<ColorPicker>();
-
-            //colorPickers.Add(GetColorFromConfig("ExampleOfProperty", "Example of label"));
-
             return ColorPickers;
         }
 
         public List<AppSetting> GetApplicationSettings()
         {
-            //List<AppSetting> AppSettings = new List<AppSetting>();
-
-            //AppSettings.Add(GetAppSettingFromConfig("ExampleOfProperty", "Example of label"));
-
             return AppSettings;
         }
         public bool SaveSettings(ConfigurationViewModel viewModel)
@@ -111,7 +109,7 @@ namespace AppConfigurator.Repositories
             return new ColorPicker(labelName, settingName, value);
         }
 
-        private AppSetting GetAppSettingFromConfig(string settingName, string labelName, SettingType settingType = SettingType.String)
+        private AppSetting GetAppSettingFromConfig(string settingName, string labelName, SettingEditorType settingType = SettingEditorType.String)
         {
             var setting = userSettingsSection.Settings.Get(settingName);
             var value = ((setting.Value.ValueXml).LastChild).InnerText.ToString();

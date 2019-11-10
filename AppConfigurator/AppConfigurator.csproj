@@ -53,6 +53,21 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.6.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.6.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.6.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.6.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.6.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="Views\App.xaml">
@@ -63,7 +78,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ColorEditorUserControl.xaml">
+    <Page Include="UserControls\ColorPickerUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -75,9 +90,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Enums\SettingType.cs" />
-    <Compile Include="Helpers\LabelHelper.cs" />
-    <Compile Include="ItemTemplateSelectors\BooleanSettingDataTemplateSelector.cs" />
+    <Compile Include="Enums\SettingEditorType.cs" />
+    <Compile Include="Helpers\SettingsHelper.cs" />
+    <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="ItemTemplateSelectors\SettingDataTemplateSelector.cs" />
     <Compile Include="Models\ColorPicker.cs" />
     <Compile Include="Models\AppSetting.cs" />
     <Compile Include="Repositories\ClientSettingsRepository.cs" />
@@ -87,12 +103,13 @@
     <Compile Include="UserControls\AppearanceUserControl.xaml.cs">
       <DependentUpon>AppearanceUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ColorEditorUserControl.xaml.cs">
-      <DependentUpon>ColorEditorUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\ColorPickerUserControl.xaml.cs">
+      <DependentUpon>ColorPickerUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\SettingsUserControl.xaml.cs">
       <DependentUpon>SettingsUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValueConverters\StringToColorConverter.cs" />
     <Compile Include="ValueConverters\ColorToBrushConverter.cs" />
     <Compile Include="ValueConverters\StringToBooleanConverter.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
@@ -123,6 +140,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

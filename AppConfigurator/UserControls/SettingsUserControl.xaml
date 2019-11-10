@@ -6,12 +6,15 @@
              xmlns:local="clr-namespace:AppConfigurator.UserControls"
              xmlns:its="clr-namespace:AppConfigurator.ItemTemplateSelectors"
              xmlns:converters="clr-namespace:AppConfigurator.ValueConverters"
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+             xmlns:uc="clr-namespace:AppConfigurator.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="600"
              d:DesignWidth="400">
     <UserControl.Resources>
         <converters:StringToBooleanConverter x:Key="StringToBooleanConverter" />
-        <its:BooleanSettingDataTemplateSelector x:Key="myBooleanSettingDataTemplateSelector" />
+        <converters:StringToColorConverter x:Key="StringToColorConverter" />
+        <its:SettingDataTemplateSelector x:Key="SettingDataTemplateSelector" />
         
         <DataTemplate x:Key="StringSettingTemplate">
             <Grid Margin="3">
@@ -38,11 +41,30 @@
                           Grid.Column="1" />
             </Grid>
         </DataTemplate>
+
+        <DataTemplate x:Key="ColorPickerSettingTemplate">
+            <Grid Margin="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Content="{Binding Path=LabelName, Mode=OneWay}"
+                       HorizontalAlignment="Left"
+                       Grid.Column="0" />
+                <local:ColorPickerUserControl ChosenColor="{Binding Path=Value, 
+                                                            Converter={StaticResource StringToColorConverter}, 
+                                                            Mode=TwoWay}"
+                                              Grid.Column="1"
+                                              HorizontalAlignment="Right" />
+            </Grid>
+        </DataTemplate>
+
     </UserControl.Resources>
 
     <Grid>
         <ItemsControl ItemsSource="{Binding Settings}"
-                      ItemTemplateSelector="{StaticResource myBooleanSettingDataTemplateSelector}" />
+                      ItemTemplateSelector="{StaticResource SettingDataTemplateSelector}" />
     </Grid>
 
 </UserControl>

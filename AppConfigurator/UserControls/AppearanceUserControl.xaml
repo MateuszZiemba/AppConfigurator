@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:uc="clr-namespace:AppConfigurator.UserControls"
              xmlns:local="clr-namespace:AppConfigurator.UserControls"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="400">
     <UserControl.Resources >
@@ -19,7 +18,7 @@
                 <Label Content="{Binding Path=LabelName, Mode=OneWay}"
                        HorizontalAlignment="Left"
                        Grid.Column="0" />
-                <local:ColorEditorUserControl ChosenColor="{Binding Path=SelectedColor, Mode=TwoWay}"
+                <local:ColorPickerUserControl ChosenColor="{Binding Path=SelectedColor, Mode=TwoWay}"
                                               Grid.Column="1"
                                               HorizontalAlignment="Right" />
             </Grid>

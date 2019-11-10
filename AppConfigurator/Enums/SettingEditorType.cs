@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AppConfigurator.Enums
 {
-    public enum SettingType
+    public enum SettingEditorType
     {
         Bool, 
         Byte, 
@@ -21,7 +21,7 @@ namespace AppConfigurator.Enums
         String,
         StringCollection, 
         DateTime, 
-        Color, 
+        ColorPicker, 
         Font, 
         Point, 
         Size, 

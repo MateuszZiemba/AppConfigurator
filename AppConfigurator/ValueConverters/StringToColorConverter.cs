@@ -9,11 +9,11 @@ using System.Windows.Media;
 
 namespace AppConfigurator.ValueConverters
 {
-    public class ColorToBrushConverter : IValueConverter //legacy converter, for Telerik RadColorPicker
+    public class StringToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new SolidColorBrush((Color)value);
+            return (Color)ColorConverter.ConvertFromString(value.ToString());
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

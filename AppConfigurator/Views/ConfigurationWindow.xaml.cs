@@ -1,4 +1,5 @@
-﻿using AppConfigurator.Models;
+﻿using AppConfigurator.Helpers;
+using AppConfigurator.Models;
 using AppConfigurator.Repositories;
 using AppConfigurator.Repositories.Contract;
 using AppConfigurator.ViewModels;
@@ -45,15 +46,16 @@ namespace AppConfigurator
                 MessageBox.Show("Save was not successful!", "Save error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        private string GetSelectedConfigFile() //todo add checkbox with remember selection setting
+        private string GetSelectedConfigFile() //todo add checkbox with remember selection setting, center openfiledialog 
         {
             string selection = null;
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = System.Environment.CurrentDirectory;
-            openFileDialog.Filter = "Config files (*.config)|*.config|All files (*.*)|*.*";
+            var openFileDialog = UIHelper.GetConfigOpenFileDialog();
 
             if (openFileDialog.ShowDialog() == true)
                 selection = openFileDialog.FileName;
+            else
+                Environment.Exit(0);
+
             return selection;
         }
     }
