@@ -10,7 +10,6 @@ namespace AppConfigurator.Repositories.Contract
 {
     public interface ISettingsRepository
     {
-        List<ColorPicker> GetAppearanceSettings();
         List<AppSetting> GetApplicationSettings();
         bool SaveSettings(ConfigurationViewModel viewModel);
     }

@@ -13,20 +13,6 @@ namespace AppConfigurator.ViewModels
 {
     public class ConfigurationViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<ColorPicker> colors;
-        public ObservableCollection<ColorPicker> Colors 
-        {
-            get {return colors; }
-            set 
-            {
-                if (value != colors)
-                {
-                    colors = value;
-                    OnPropertyChanged("Colors");
-                }
-            }
-        }
-
         private ObservableCollection<AppSetting> settings;
         public ObservableCollection<AppSetting> Settings
         {
@@ -43,7 +29,6 @@ namespace AppConfigurator.ViewModels
 
         public ConfigurationViewModel(ISettingsRepository settingsRepository)
         {
-            Colors = new ObservableCollection<ColorPicker>(settingsRepository.GetAppearanceSettings());
             Settings = new ObservableCollection<AppSetting>(settingsRepository.GetApplicationSettings());
         }
 

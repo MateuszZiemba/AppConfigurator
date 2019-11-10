@@ -55,8 +55,7 @@
                 <local:ColorPickerUserControl ChosenColor="{Binding Path=Value, 
                                                             Converter={StaticResource StringToColorConverter}, 
                                                             Mode=TwoWay}"
-                                              Grid.Column="1"
-                                              HorizontalAlignment="Right" />
+                                              Grid.Column="1"/>
             </Grid>
         </DataTemplate>
 

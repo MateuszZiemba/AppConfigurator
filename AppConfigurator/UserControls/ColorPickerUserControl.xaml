@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:AppConfigurator.UserControls"
              xmlns:converters="clr-namespace:AppConfigurator.ValueConverters"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="200">
+             d:DesignHeight="40" d:DesignWidth="40">
     <Grid>
         <WpfToolkit:ColorPicker Name="ColorPicker" 
                                 SelectedColor="{Binding Path=Value}"

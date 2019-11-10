@@ -13,17 +13,16 @@ using System.Xml.Linq;
 
 namespace AppConfigurator.Repositories
 {
-    public class ClientSettingsRepository : ISettingsRepository
+    public class AppSettingsRepository : ISettingsRepository
     {
         private Configuration config;
         private ClientSettingsSection userSettingsSection;
         private string connectionStringName;
         private const string userSettingsName = "userSettings";
 
-        private List<ColorPicker> ColorPickers { get; set; }
         private List<AppSetting> AppSettings { get; set; }
 
-        public ClientSettingsRepository(string configFilePath)
+        public AppSettingsRepository(string configFilePath)
         {
             string userSettingsPath = GetFullUserSettingsSectionPath(configFilePath);
 
@@ -34,9 +33,6 @@ namespace AppConfigurator.Repositories
             config = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
             userSettingsSection = (ClientSettingsSection)config.GetSection(userSettingsPath);
             
-            
-
-            ColorPickers = new List<ColorPicker>();
             AppSettings = new List<AppSetting>();
             MethodToGetData();
         }
@@ -75,11 +71,6 @@ namespace AppConfigurator.Repositories
                 return SettingEditorType.String;
         }
 
-        public List<ColorPicker> GetAppearanceSettings()
-        {
-            return ColorPickers;
-        }
-
         public List<AppSetting> GetApplicationSettings()
         {
             return AppSettings;
@@ -88,7 +79,6 @@ namespace AppConfigurator.Repositories
         {
             try
             {
-                UpdateAppearanceUserSettings(viewModel.Colors);
                 UpdateAppSettingUserSettings(viewModel.Settings);
                 //UpdateConnectionSettingUserSettings(viewModel.ConnectionSettings); //todo implement
                 //UpdateConnectionString(viewModel.ConnectionSettings.Where(x=>x.ConfigurationName.Equals(connectionStringName)).FirstOrDefault());
@@ -99,29 +89,6 @@ namespace AppConfigurator.Repositories
             catch (Exception ex)
             {
                 return false;
-            }
-        }
-
-        private ColorPicker GetColorFromConfig(string settingName, string labelName)
-        {
-            var setting = userSettingsSection.Settings.Get(settingName);
-            var value = ((setting.Value.ValueXml).LastChild).InnerText.ToString();
-            return new ColorPicker(labelName, settingName, value);
-        }
-
-        private AppSetting GetAppSettingFromConfig(string settingName, string labelName, SettingEditorType settingType = SettingEditorType.String)
-        {
-            var setting = userSettingsSection.Settings.Get(settingName);
-            var value = ((setting.Value.ValueXml).LastChild).InnerText.ToString();
-            return new AppSetting(labelName, settingName, value, settingType);
-        }
-
-        private void UpdateAppearanceUserSettings(IList<ColorPicker> colors)
-        {
-            foreach (var color in colors)
-            { 
-                var setting = userSettingsSection.Settings.Get(color.ConfigurationName);
-                setting.Value.ValueXml.InnerText = color.SelectedColor.ToString();
             }
         }
 

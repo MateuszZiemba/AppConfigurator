@@ -4,8 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:AppConfigurator.UserControls"
-        xmlns:local="clr-namespace:AppConfigurator"
-        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="App Configurator"
         Height="600"
@@ -23,12 +21,12 @@
                     <uc:SettingsUserControl />
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="Color pickers">
+            <!--<TabItem Header="Color pickers">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                               VerticalScrollBarVisibility="Auto">
                     <uc:AppearanceUserControl />
                 </ScrollViewer>
-            </TabItem>
+            </TabItem>-->
         </TabControl>
         <Button Name="saveButton"
                 Click="SaveSettings"

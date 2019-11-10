@@ -32,7 +32,7 @@ namespace AppConfigurator
         public ConfigurationWindow()
         {
             InitializeComponent();
-            settingsRepository = new ClientSettingsRepository(GetSelectedConfigFile());
+            settingsRepository = new AppSettingsRepository(GetSelectedConfigFile());
             ViewModel = new ConfigurationViewModel(settingsRepository);
             this.DataContext = ViewModel;
         }
