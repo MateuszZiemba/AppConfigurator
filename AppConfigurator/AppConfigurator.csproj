@@ -100,6 +100,7 @@
     <Compile Include="ItemTemplateSelectors\SettingDataTemplateSelector.cs" />
     <Compile Include="Models\ColorPicker.cs" />
     <Compile Include="Models\AppSetting.cs" />
+    <Compile Include="Models\SettingSection.cs" />
     <Compile Include="Repositories\AppSettingsRepository.cs" />
     <Compile Include="Repositories\Contracts\ISettingsRepository.cs" />
     <Compile Include="Settings.cs" />
@@ -120,7 +121,6 @@
     <Compile Include="ValueConverters\StringToColorConverter.cs" />
     <Compile Include="ValueConverters\ColorToBrushConverter.cs" />
     <Compile Include="ValueConverters\StringToBooleanConverter.cs" />
-    <Compile Include="ViewModels\ConfigurationViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

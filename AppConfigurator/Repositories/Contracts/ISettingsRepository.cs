@@ -10,8 +10,7 @@ namespace AppConfigurator.Repositories.Contract
 {
     public interface ISettingsRepository
     {
-        List<AppSetting> GetApplicationSettings();
-        List<string> GetSectionNames();
+        List<SettingSection> GetSettingSections();
         bool SaveSettings(SettingsViewModel viewModel);
     }
 }

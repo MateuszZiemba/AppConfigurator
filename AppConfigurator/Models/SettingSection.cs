@@ -1,6 +1,4 @@
-﻿using AppConfigurator.Models;
-using AppConfigurator.Repositories;
-using AppConfigurator.Repositories.Contract;
+﻿using AppConfigurator.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,10 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppConfigurator.ViewModels
+namespace AppConfigurator.Models
 {
-    public class ConfigurationViewModel : INotifyPropertyChanged
+    public class SettingSection
     {
+        public string TabHeader { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
+
         private ObservableCollection<AppSetting> settings;
         public ObservableCollection<AppSetting> Settings
         {
@@ -27,9 +29,12 @@ namespace AppConfigurator.ViewModels
             }
         }
 
-        public ConfigurationViewModel(ISettingsRepository settingsRepository)
+        public SettingSection(string sectionName, List<AppSetting> appSettings, string sectionPath)
         {
-            Settings = new ObservableCollection<AppSetting>(settingsRepository.GetApplicationSettings());
+            TabHeader = SettingsHelper.BeautifySettingName(sectionName);
+            Name = sectionName;
+            Settings = new ObservableCollection<AppSetting>(appSettings);
+            Path = sectionPath;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

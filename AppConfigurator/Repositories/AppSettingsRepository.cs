@@ -17,44 +17,51 @@ namespace AppConfigurator.Repositories
 {
     public class AppSettingsRepository : ISettingsRepository
     {
-        private Configuration config;
-        private ClientSettingsSection userSettingsSection;
-        private string connectionStringName;
-        private const string userSettingsName = "userSettings";
+        Configuration config;
+        private List<SettingSection> SettingSections { get; set; }
 
-        private List<AppSetting> AppSettings { get; set; }
-        private List<string> SectionNames { get; set; }
 
         public AppSettingsRepository(string configFilePath)
         {
-            AppSettings = new List<AppSetting>();
-            SectionNames = new List<string>();
+            SettingSections = new List<SettingSection>();
+            LoadSettingsFromFile(configFilePath);
+        }
 
-            string userSettingsPath = GetFullUserSettingsSectionPath(configFilePath);
+        public List<SettingSection> GetSettingSections()
+        {
+            return SettingSections;
+        }
 
-            //connectionStringName = "connstringName"; //todo to implement
+        private void LoadSettingsFromFile(string configFilePath)
+        {
+            List<string> sectionNames;
 
             ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
             fileMap.ExeConfigFilename = configFilePath;
             config = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
-            userSettingsSection = (ClientSettingsSection)config.GetSection(userSettingsPath);
+            sectionNames = GetSettingsSectionNames(configFilePath);
 
-            GetSettingsSectionNames(configFilePath);
-            GetAppSettingsFromSettingsFile();
+            foreach (var sectionName in sectionNames)
+            {
+                string settingsPath = GetFullSettingsSectionPath(configFilePath, sectionName);
+                ClientSettingsSection clientSettingsSection = (ClientSettingsSection)config.GetSection(settingsPath);
+                var appSettings = GetAppSettingsFromSection(clientSettingsSection);
+                SettingSections.Add(new SettingSection(sectionName, appSettings, settingsPath));
+            }
         }
 
-        private string GetFullUserSettingsSectionPath(string configFilePath)
+        private string GetFullSettingsSectionPath(string configFilePath, string sectionName)
         {
             string userSettingsNodeName = null;
             XDocument configXml = XDocument.Load(configFilePath);
-            var userSettingsNode = (XElement)configXml.Descendants().Where(n => n.Name.LocalName.Equals(userSettingsName)).FirstOrDefault();
+            var userSettingsNode = (XElement)configXml.Descendants().Where(n => n.Name.LocalName.Equals(sectionName)).FirstOrDefault();
             if (userSettingsNode != null)
                 userSettingsNodeName = ((XElement)userSettingsNode.FirstNode).Name.LocalName;
 
-            return String.Concat(userSettingsName, "/", userSettingsNodeName);
+            return String.Concat(sectionName, "/", userSettingsNodeName);
         }
 
-        public void GetSettingsSectionNames(string configFilePath)
+        private List<string> GetSettingsSectionNames(string configFilePath)
         {
             const string sectionGroupName = "sectionGroup";
             List<string> sectionNames = new List<string>();
@@ -65,13 +72,16 @@ namespace AppConfigurator.Repositories
             foreach (var section in sectionGroupNames)
             {
                 var sectionName = section.FirstAttribute.Value.ToString();
-                SectionNames.Add(SettingsHelper.BeautifySettingName(sectionName));
+                sectionNames.Add(sectionName);
             }
+            return sectionNames;
         }
 
-        private void GetAppSettingsFromSettingsFile() 
+        private List<AppSetting> GetAppSettingsFromSection(ClientSettingsSection clientSettingsSection) 
         {
-            foreach (SettingElement setting in userSettingsSection.Settings)
+            List<AppSetting> appSettings = new List<AppSetting>();
+
+            foreach (SettingElement setting in clientSettingsSection.Settings)
             {
                 string value = String.Empty;
                 var name = setting.Name;
@@ -80,8 +90,9 @@ namespace AppConfigurator.Repositories
                 var labelName = SettingsHelper.BeautifySettingName(name);
                 var settingEditorType = GetSettingEditorType(value);
 
-                AppSettings.Add(new AppSetting(labelName, name, value, settingEditorType));
+                appSettings.Add(new AppSetting(labelName, name, value, settingEditorType));
             }
+            return appSettings;
         }
 
         private SettingEditorType GetSettingEditorType(string settingValue)
@@ -100,26 +111,18 @@ namespace AppConfigurator.Repositories
                 return SettingEditorType.String;
         }
 
-        public List<AppSetting> GetApplicationSettings()
-        {
-            return AppSettings;
-        }
-
-        public List<string> GetSectionNames()
-        {
-            return SectionNames;
-        }
-
         public bool SaveSettings(SettingsViewModel viewModel)
         {
             try
             {
-                //FormatSettingsDateTimes(viewModel.Settings);
-                //UpdateAppSettingUserSettings(viewModel.Settings);
+                foreach (var section in viewModel.SettingSections)
+                {
+                    FormatSettingsDateTimes(section.Settings);
+                    UpdateAppSettingUserSettings(section);
+                }
                 ////UpdateConnectionSettingUserSettings(viewModel.ConnectionSettings); //todo implement
                 ////UpdateConnectionString(viewModel.ConnectionSettings.Where(x=>x.ConfigurationName.Equals(connectionStringName)).FirstOrDefault());
-                //userSettingsSection.SectionInformation.ForceSave = true;
-                //config.Save(ConfigurationSaveMode.Full);
+                config.Save(ConfigurationSaveMode.Full);
                 return true;
             }
             catch (Exception ex)
@@ -143,13 +146,15 @@ namespace AppConfigurator.Repositories
             }
         }
 
-        private void UpdateAppSettingUserSettings(IList<AppSetting> AppSettings)
+        private void UpdateAppSettingUserSettings(SettingSection section)
         {
-            foreach (var AppSetting in AppSettings)
+            ClientSettingsSection clientSettingsSection = (ClientSettingsSection)config.GetSection(section.Path);
+            foreach (var appSetting in section.Settings)
             {
-                var setting = userSettingsSection.Settings.Get(AppSetting.ConfigurationName);
-                setting.Value.ValueXml.InnerText = AppSetting.Value;
+                var setting = clientSettingsSection.Settings.Get(appSetting.ConfigurationName);
+                setting.Value.ValueXml.InnerText = appSetting.Value;
             }
+            clientSettingsSection.SectionInformation.ForceSave = true;
         }
 
         //private void UpdateConnectionString(ConnectionSetting connectionString) //todo implement
