@@ -26,14 +26,14 @@ namespace AppConfigurator
     public partial class ConfigurationWindow : Window
     {
 
-        public ConfigurationViewModel ViewModel { get; set; }
+        public SettingsViewModel ViewModel { get; set; }
         private ISettingsRepository settingsRepository;
 
         public ConfigurationWindow()
         {
             InitializeComponent();
             settingsRepository = new AppSettingsRepository(GetSelectedConfigFile());
-            ViewModel = new ConfigurationViewModel(settingsRepository);
+            ViewModel = new SettingsViewModel(settingsRepository);
             this.DataContext = ViewModel;
         }
 

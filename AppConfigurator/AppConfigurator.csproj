@@ -121,6 +121,7 @@
     <Compile Include="ValueConverters\ColorToBrushConverter.cs" />
     <Compile Include="ValueConverters\StringToBooleanConverter.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

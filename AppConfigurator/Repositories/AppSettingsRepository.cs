@@ -23,9 +23,13 @@ namespace AppConfigurator.Repositories
         private const string userSettingsName = "userSettings";
 
         private List<AppSetting> AppSettings { get; set; }
+        private List<string> SectionNames { get; set; }
 
         public AppSettingsRepository(string configFilePath)
         {
+            AppSettings = new List<AppSetting>();
+            SectionNames = new List<string>();
+
             string userSettingsPath = GetFullUserSettingsSectionPath(configFilePath);
 
             //connectionStringName = "connstringName"; //todo to implement
@@ -34,9 +38,8 @@ namespace AppConfigurator.Repositories
             fileMap.ExeConfigFilename = configFilePath;
             config = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
             userSettingsSection = (ClientSettingsSection)config.GetSection(userSettingsPath);
-            
-            AppSettings = new List<AppSetting>();
 
+            GetSettingsSectionNames(configFilePath);
             GetAppSettingsFromSettingsFile();
         }
 
@@ -47,7 +50,23 @@ namespace AppConfigurator.Repositories
             var userSettingsNode = (XElement)configXml.Descendants().Where(n => n.Name.LocalName.Equals(userSettingsName)).FirstOrDefault();
             if (userSettingsNode != null)
                 userSettingsNodeName = ((XElement)userSettingsNode.FirstNode).Name.LocalName;
+
             return String.Concat(userSettingsName, "/", userSettingsNodeName);
+        }
+
+        public void GetSettingsSectionNames(string configFilePath)
+        {
+            const string sectionGroupName = "sectionGroup";
+            List<string> sectionNames = new List<string>();
+
+            XDocument configXml = XDocument.Load(configFilePath);
+            var sectionGroupNames = configXml.Descendants().Where(x => x.Name.LocalName.Equals(sectionGroupName)).ToList();
+
+            foreach (var section in sectionGroupNames)
+            {
+                var sectionName = section.FirstAttribute.Value.ToString();
+                SectionNames.Add(SettingsHelper.BeautifySettingName(sectionName));
+            }
         }
 
         private void GetAppSettingsFromSettingsFile() 
@@ -58,7 +77,7 @@ namespace AppConfigurator.Repositories
                 var name = setting.Name;
                 if((setting.Value.ValueXml).LastChild != null)
                     value = ((setting.Value.ValueXml).LastChild).InnerText?.ToString();
-                var labelName = SettingsHelper.GetLabelFromSettingName(name);
+                var labelName = SettingsHelper.BeautifySettingName(name);
                 var settingEditorType = GetSettingEditorType(value);
 
                 AppSettings.Add(new AppSetting(labelName, name, value, settingEditorType));
@@ -85,16 +104,22 @@ namespace AppConfigurator.Repositories
         {
             return AppSettings;
         }
-        public bool SaveSettings(ConfigurationViewModel viewModel)
+
+        public List<string> GetSectionNames()
+        {
+            return SectionNames;
+        }
+
+        public bool SaveSettings(SettingsViewModel viewModel)
         {
             try
             {
-                FormatSettingsDateTimes(viewModel.Settings);
-                UpdateAppSettingUserSettings(viewModel.Settings);
-                //UpdateConnectionSettingUserSettings(viewModel.ConnectionSettings); //todo implement
-                //UpdateConnectionString(viewModel.ConnectionSettings.Where(x=>x.ConfigurationName.Equals(connectionStringName)).FirstOrDefault());
-                userSettingsSection.SectionInformation.ForceSave = true;
-                config.Save(ConfigurationSaveMode.Full);
+                //FormatSettingsDateTimes(viewModel.Settings);
+                //UpdateAppSettingUserSettings(viewModel.Settings);
+                ////UpdateConnectionSettingUserSettings(viewModel.ConnectionSettings); //todo implement
+                ////UpdateConnectionString(viewModel.ConnectionSettings.Where(x=>x.ConfigurationName.Equals(connectionStringName)).FirstOrDefault());
+                //userSettingsSection.SectionInformation.ForceSave = true;
+                //config.Save(ConfigurationSaveMode.Full);
                 return true;
             }
             catch (Exception ex)

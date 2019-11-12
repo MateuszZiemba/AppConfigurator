@@ -11,10 +11,11 @@ namespace AppConfigurator.Helpers
 {
     public static class SettingsHelper //I think that this method is a bit of a code smell, but it is the easiest way - KISS
     {
-        public static string GetLabelFromSettingName(string settingName)
+        public static string BeautifySettingName(string settingName)
         {
             var camelCaseLabel = Regex.Replace(settingName, @"\d( *\d*)*\d", (MatchEvaluator)(match => { return match.Value.Replace(" ", ""); }));
-            return Regex.Replace(Regex.Replace(settingName, @"(\P{Ll})(\P{Ll}\p{Ll})", "$1 $2"), @"(\p{Ll})(\P{Ll})", "$1 $2");
+            camelCaseLabel = Regex.Replace(Regex.Replace(settingName, @"(\P{Ll})(\P{Ll}\p{Ll})", "$1 $2"), @"(\p{Ll})(\P{Ll})", "$1 $2");
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(camelCaseLabel);
         }
 
         public static bool IsSettingColor(string settingValue) 
