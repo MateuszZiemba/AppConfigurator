@@ -39,9 +39,13 @@ namespace AppConfigurator
 
         private void SaveSettings(object sender, RoutedEventArgs e) //todo add to resources & check for changes in config 
         {
-            MessageBox.Show("Do you want to save changes?", "Save changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-            if (settingsRepository.SaveSettings(ViewModel))
+            MessageBoxResult result = MessageBox.Show("Do you want to save changes?", "Save changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes && settingsRepository.SaveSettings(ViewModel))
                 MessageBox.Show("Save successful!", "Saved!", MessageBoxButton.OK, MessageBoxImage.Information);
+            else if (result == MessageBoxResult.No || result == MessageBoxResult.Cancel)
+            { 
+                //do nothing
+            }
             else
                 MessageBox.Show("Save was not successful!", "Save error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
