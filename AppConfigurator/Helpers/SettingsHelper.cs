@@ -11,10 +11,10 @@ namespace AppConfigurator.Helpers
 {
     public static class SettingsHelper //I think that this method is a bit of a code smell, but it is the easiest way - KISS
     {
-        public static string GetLabelFromSettingName(string settingName) //todo bug with spaces in acronyms
+        public static string GetLabelFromSettingName(string settingName)
         {
-            var camelCaseLabel = string.Concat(settingName.Select(x => Char.IsUpper(x) || Char.IsDigit(x) ? " " + x : x.ToString())).TrimStart(' ');
-            return Regex.Replace(camelCaseLabel, @"\d( *\d*)*\d", (MatchEvaluator)(match => { return match.Value.Replace(" ", ""); }));
+            var camelCaseLabel = Regex.Replace(settingName, @"\d( *\d*)*\d", (MatchEvaluator)(match => { return match.Value.Replace(" ", ""); }));
+            return Regex.Replace(Regex.Replace(settingName, @"(\P{Ll})(\P{Ll}\p{Ll})", "$1 $2"), @"(\p{Ll})(\P{Ll})", "$1 $2");
         }
 
         public static bool IsSettingColor(string settingValue) 
