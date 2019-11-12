@@ -11,18 +11,7 @@ namespace AppConfigurator.Enums
         Bool, 
         Numeric,
         String,
-        //StringCollection, 
         DateTime, 
         ColorPicker, 
-        //Font, 
-        //Point, 
-        //Size, 
-        //Guid, 
-        //TimeSpan, 
-        //Uint, 
-        //Ulong, 
-        //Ushort, 
-        //Url, 
-        //ConnectionString
     }
 }

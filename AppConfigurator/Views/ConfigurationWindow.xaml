@@ -28,7 +28,7 @@
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                   VerticalScrollBarVisibility="Auto">
                         <uc:SettingsUserControl 
-                        Settings="{Binding SettingSection.Content, Mode=TwoWay, diag:PresentationTraceSources.TraceLevel=High}" />
+                        Settings="{Binding SettingSection.Content, Mode=TwoWay}" />
                     </ScrollViewer>
                 </DataTemplate>
             </TabControl.ContentTemplate>
