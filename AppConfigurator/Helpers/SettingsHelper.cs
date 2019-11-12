@@ -11,7 +11,7 @@ namespace AppConfigurator.Helpers
 {
     public static class SettingsHelper //I think that this method is a bit of a code smell, but it is the easiest way - KISS
     {
-        public static string GetLabelFromSettingName(string settingName)
+        public static string GetLabelFromSettingName(string settingName) //todo bug with spaces in acronyms
         {
             var camelCaseLabel = string.Concat(settingName.Select(x => Char.IsUpper(x) || Char.IsDigit(x) ? " " + x : x.ToString())).TrimStart(' ');
             return Regex.Replace(camelCaseLabel, @"\d( *\d*)*\d", (MatchEvaluator)(match => { return match.Value.Replace(" ", ""); }));

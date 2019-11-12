@@ -54,8 +54,10 @@ namespace AppConfigurator.Repositories
         {
             foreach (SettingElement setting in userSettingsSection.Settings)
             {
+                string value = String.Empty;
                 var name = setting.Name;
-                var value = ((setting.Value.ValueXml).LastChild).InnerText.ToString();
+                if((setting.Value.ValueXml).LastChild != null)
+                    value = ((setting.Value.ValueXml).LastChild).InnerText?.ToString();
                 var labelName = SettingsHelper.GetLabelFromSettingName(name);
                 var settingEditorType = GetSettingEditorType(value);
 
