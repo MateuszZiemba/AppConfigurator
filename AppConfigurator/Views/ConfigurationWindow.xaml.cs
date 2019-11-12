@@ -25,7 +25,6 @@ namespace AppConfigurator
 {
     public partial class ConfigurationWindow : Window
     {
-
         public SettingsViewModel ViewModel { get; set; }
         private ISettingsRepository settingsRepository;
 
